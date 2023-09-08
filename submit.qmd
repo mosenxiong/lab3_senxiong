@@ -14,15 +14,21 @@ Quarto enables you to weave together content and executable code into a finished
 
 When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
 
+```{r}
+library(magrittr)
+library(dplyr) 
+library(R.utils)
+```
+
 # Q1
 ```{r}
 download.file(
   "https://raw.githubusercontent.com/USCbiostats/data-science-data/master/02_met/met_all.gz",
-  destfile = file.path("~", "Downloads", "met_all.gz"),
+  destfile = file.path( "met_all.gz"),
   method   = "libcurl",
   timeout  = 60
 )
-met <- data.table::fread(file.path("~", "Downloads", "met_all.gz"))
+met <- data.table::fread(file.path("met_all.gz"))
 ```
 # Q2
 ```{r}
@@ -72,10 +78,11 @@ cor(elev$temp, elev$day, use="complete")
 
 #Q7
 ```{r}
+
 hist(met$elev, breaks=100)
 hist(met$temp)
 hist(met$wind.sp)
-
+library(leaflet)
 leaflet(elev) %>%
   addProviderTiles('OpenStreetMap') %>% 
   addCircles(lat=~lat,lng=~lon, opacity=1, fillOpacity=1, radius=100)
@@ -93,11 +100,3 @@ plot(elev$date, elev$wind.sp, type='l')
 ```
 
 
-You can add options to executable code like this
-
-```{r}
-#| echo: false
-2 * 2
-```
-
-The `echo: false` option disables the printing of code (only output is displayed).
