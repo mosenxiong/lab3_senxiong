@@ -18,6 +18,8 @@ When you click the **Render** button a document will be generated that includes 
 library(magrittr)
 library(dplyr) 
 library(R.utils)
+library(ggplot2)
+library(corrplot)
 ```
 
 # Q1
@@ -28,7 +30,7 @@ download.file(
   method   = "libcurl",
   timeout  = 60
 )
-met <- data.table::fread(file.path("met_all.gz"))
+met <- data.table::fread("met_all.gz")
 ```
 # Q2
 ```{r}
@@ -98,5 +100,24 @@ plot(elev$date, elev$temp, type='l')
 
 plot(elev$date, elev$wind.sp, type='l')
 ```
+
+# Q8
+1. I want to observe the relationship between temp and rh for day=10.
+```{r}
+met3<-met[day==10]
+ggplot(data = met3, mapping = aes(x = temp, y = rh)) +geom_point() + geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Temperature and rh", xlab  = "temp", y = "rh")
+```
+2. I want to look at the frequency of each hour
+```{r}
+hist(met3$hour)
+```
+
+3. I want to look at this and look at the scatter plots between these three variables temp, lat, rh.
+```{r}
+pairs(~ temp + lat + rh, data = met3)
+```
+
+
 
 
